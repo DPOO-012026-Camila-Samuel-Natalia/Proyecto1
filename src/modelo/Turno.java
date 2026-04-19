@@ -3,14 +3,10 @@ import java.util.ArrayList;
 
 public class Turno {
 	    private String diaSemana;
-	    private String horaInicio;
-	    private String horaFin;
 	    private ArrayList<Empleado> empleados;  // quiénes trabajan en este turno
 
-	    public Turno(String diaSemana, String horaInicio, String horaFin) {
+	    public Turno(String diaSemana) {
 	        this.diaSemana = diaSemana;
-	        this.horaInicio = horaInicio;
-	        this.horaFin = horaFin;
 	        this.empleados = new ArrayList<>();
 	    }
 
@@ -30,11 +26,10 @@ public class Turno {
 	    }
 	    public ArrayList<Empleado> getEmpleados() { return empleados; }
 	    public String getDiaSemana()  { return diaSemana; }
-	    public String getHoraInicio() { return horaInicio; }
-	    public String getHoraFin()    { return horaFin; }
+	   
 
 	    @Override
 	    public String toString() {
-	        return diaSemana + " " + horaInicio + "-" + horaFin;
+	        return diaSemana;
 	    }
 	}

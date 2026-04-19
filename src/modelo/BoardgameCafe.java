@@ -2,13 +2,15 @@ package modelo;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.HashMap;
+import java.util.Collection;
 
 public class BoardgameCafe
 {
 	private Administrador administrador;
 
-	private ArrayList<Cliente> clientes;
-	private ArrayList<Empleado> empleados;
+	private HashMap<String, Cliente> clientes;
+	private HashMap<String, Empleado> empleados;
 	private ArrayList<Mesa> mesas;
 	private ArrayList<JuegoDeMesa> juegos;
 	//private ArrayList<CopiaJuego> copias;
@@ -28,8 +30,8 @@ public class BoardgameCafe
 		this.capacidadMaxima = capacidadMaxima;
 		this.clientesActuales = 0;
 		administrador = null;
-		clientes = new ArrayList<Cliente>();
-		empleados = new ArrayList<Empleado>();
+		clientes = new HashMap<String, Cliente>();
+		empleados = new HashMap<String, Empleado>();
 		mesas = new ArrayList<Mesa>();
 		juegos = new ArrayList<JuegoDeMesa>();
 		//copias = new ArrayList<CopiaJuego>();
@@ -39,6 +41,7 @@ public class BoardgameCafe
 		ventasJuego = new ArrayList<VentaJuego>();
 		solicitudesCambioTurno = new ArrayList<SolicitudCambioTurno>();
 		sugerenciasPlatillos = new ArrayList<SugerenciaPlatillo>();
+		turnos = new ArrayList<Turno>();
 	}
 
 
@@ -61,14 +64,12 @@ public class BoardgameCafe
 	}
 
 
-	public ArrayList<Cliente> getClientes()
-	{
-		return clientes;
+	public Collection<Cliente> getClientes() {
+	    return clientes.values();  // retorna todos los clientes
 	}
 
-	public ArrayList<Empleado> getEmpleados()
-	{
-		return empleados;
+	public Collection<Empleado> getEmpleados() {
+	    return empleados.values();  // retorna todos los empleados
 	}
 
 	public ArrayList<Mesa> getMesas()
@@ -115,7 +116,8 @@ public class BoardgameCafe
 	{
 		return sugerenciasPlatillos;
 	}
-
+	public ArrayList<Turno> getTurnos() { 
+		return turnos; }
 	
 
 	// SETTERS
@@ -129,14 +131,13 @@ public class BoardgameCafe
 	// AGREGAR
 
 
-	public void agregarCliente(Cliente c)
-	{
-		clientes.add(c);
+	public void agregarCliente(Cliente c) {
+	    clientes.put(c.getLogin(), c);
 	}
 
-	public void agregarEmpleado(Empleado e)
-	{
-		empleados.add(e);
+
+	public void agregarEmpleado(Empleado e) {
+	    empleados.put(e.getLogin(), e);
 	}
 
 	public void agregarMesa(Mesa m)
@@ -188,28 +189,12 @@ public class BoardgameCafe
 	// BUSCAR
 
 
-	public Cliente buscarCliente(String id)
-	{
-		for (int i = 0; i < clientes.size(); i++)
-		{
-			if (clientes.get(i).getId().equals(id))
-			{
-				return clientes.get(i);
-			}
-		}
-		return null;
+	public Cliente buscarCliente(String login) {
+	    return clientes.get(login);  // retorna null si no existe
 	}
 
-	public Empleado buscarEmpleado(String id)
-	{
-		for (int i = 0; i < empleados.size(); i++)
-		{
-			if (empleados.get(i).getId().equals(id))
-			{
-				return empleados.get(i);
-			}
-		}
-		return null;
+	public Empleado buscarEmpleado(String login) {
+	    return empleados.get(login);
 	}
 
 	public Mesa buscarMesa(int numero)
@@ -284,7 +269,19 @@ public class BoardgameCafe
 	        if (mesa.getNumPersonas() > juego.getMaxJugadores())
 	            throw new IllegalStateException("Demasiadas personas para este juego");
 	    }
-
+	    
+	    if (juego.isDificil()) {
+	        boolean hayMesero = false;
+	        for (Empleado e : empleados.values()) {
+	            if (e instanceof Mesero && e.isEnTurno()) {
+	                if (((Mesero) e).dominaJuego(juego.getNombre())) {
+	                    hayMesero = true;
+	                }
+	            }
+	        }
+	        if (!hayMesero)
+	            throw new IllegalStateException("No hay mesero que domine este juego dificil");
+	    }
 	    Prestamo p = new Prestamo((Usuario) solicitante, juego);
 	    juego.prestar();
 	    solicitante.agregarJuegoPrestado(juego);
@@ -411,6 +408,17 @@ public class BoardgameCafe
   
 	
 	//Ventas Juegos
+    
+    public void aplicarCodigoDescuento(Cliente cliente, String codigo) {
+        // Buscar el empleado que tiene ese código
+        for (Empleado e : empleados.values()) {
+            if (e.getCodigoDescuento().equals(codigo)) {
+                cliente.setCodigoDescuento(codigo);
+                return;
+            }
+        }
+        throw new IllegalStateException("Codigo de descuento invalido");
+    }
 	
     public VentaJuego registrarVentaJuego(Usuario comprador, JuegoDeMesa juego, int cantidad) {
         if (!juego.estaDisponibleVenta())
@@ -421,6 +429,17 @@ public class BoardgameCafe
         String codigo = "VJ-" + (ventasJuego.size() + 1);
         VentaJuego venta = new VentaJuego(codigo, comprador);
         venta.agregarDetalle(new DetalleVentaJuego(juego, cantidad));
+        
+     // Calcular descuento
+        if (comprador instanceof Empleado) {
+            venta.setDescuento(venta.calcularSubtotal() * 0.20);
+        } else if (comprador instanceof Cliente) {
+            Cliente c = (Cliente) comprador;
+            if (c.tieneDescuento()) {
+                // 10% de descuento por código de empleado
+                venta.setDescuento(venta.calcularSubtotal() * 0.10);
+            }
+        }
 
         for (int i = 0; i < cantidad; i++) juego.vender();
 
@@ -629,7 +648,7 @@ public class BoardgameCafe
 		if (historialPrestamos.size() > 0)
 		{
 			texto += ", prestamosTotales=" + historialPrestamos.size();
-			texto += ", prestamosActivos=" + getPrestamosActivos();
+			texto += ", prestamosActivos=" + getPrestamosActivos().size();
 		}
 
 		if (productosMenu.size() > 0)

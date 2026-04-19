@@ -1,6 +1,7 @@
 package modelo;
 
 import java.util.ArrayList;
+import java.text.SimpleDateFormat;
 
 // Esta clase representa una venta de juegos.
 // Hereda de Venta.
@@ -51,16 +52,19 @@ public class VentaJuego extends Venta
 	@Override
 	public double calcularTotal()
 	{
-		return calcularSubtotal() + calcularIVA();
+		return calcularSubtotal() + calcularIVA() - getDescuento();
 	}
 
 	@Override
 	public String toString()
 	{
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+		String fechaFormateada = sdf.format(getFecha());
 		return "VentaJuego [codigo=" + getCodigo()
-				+ ", cliente=" + getComprador().getNombre()
-				+ ", subtotal=" + calcularSubtotal()
-				+ ", iva=" + calcularIVA()
-				+ ", total=" + calcularTotal() + "]";
+				+ ", cliente= " + getComprador().getNombre()
+				+ ", subtotal= " + calcularSubtotal()
+				+ ", iva= " + calcularIVA()
+				+ ", total= " + calcularTotal() 
+				+ ",Fecha= " + fechaFormateada + "]";
 	}
 }

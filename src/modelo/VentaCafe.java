@@ -1,6 +1,7 @@
 package modelo;
 
 import java.util.ArrayList;
+import java.text.SimpleDateFormat;
 
 // Esta clase representa una venta del café.
 // Hereda de Venta.
@@ -97,10 +98,15 @@ public class VentaCafe extends Venta
 	@Override
 	public String toString()
 	{
+		
+
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+		String fechaFormateada = sdf.format(getFecha());
 		return "VentaCafe [codigo=" + getCodigo() + ", cliente=" + getComprador().getNombre()
 				+ ", mesa=" + this.getMesa().getNumero() + ", subtotal=" + calcularSubtotal()
 				+ ", impuesto=" + calcularImpuestoConsumo()
 				+ ", propina=" + calcularPropina()
-				+ ", total=" + calcularTotal() + "]";
+				+ ", total=" + calcularTotal() 
+				+ ",Fecha= " + fechaFormateada + "]";
 	}
 }

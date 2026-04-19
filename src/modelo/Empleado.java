@@ -9,19 +9,16 @@ public abstract class Empleado extends Usuario implements PuedePrestar {
 
     private ArrayList<Turno> turnos;
     private boolean enTurno;
-    private double descuentoPropio;
-    private double descuentoCompartido;
     private List<JuegoDeMesa> juegosPrestados;
+    private String codigoDescuento;
 
     
-    public Empleado(String id, String nombre, String login, String password,
-                    double descuentoPropio, double descuentoCompartido) {
+    public Empleado(String id, String nombre, String login, String password) {
         super(id, nombre, login, password);
         this.turnos = new ArrayList<>();
         this.enTurno = false;
-        this.descuentoPropio = descuentoPropio;
-        this.descuentoCompartido = descuentoCompartido;
         this.juegosPrestados = new ArrayList<>();
+        this.codigoDescuento = "DESC-" + id;
     }
 
     //  TURNOS 
@@ -32,15 +29,13 @@ public abstract class Empleado extends Usuario implements PuedePrestar {
     // ESTADO
     public boolean isEnTurno()     { return enTurno; }
     
-
     public void iniciarTurno()  { enTurno = true; }
     public void terminarTurno() { enTurno = false; }
 
   
 
     //  DESCUENTOS 
-    public double getDescuentoPropio()       { return descuentoPropio; }
-    public double getDescuentoCompartido()   { return descuentoCompartido; }
+    public String getCodigoDescuento() { return codigoDescuento; }
 
     // PUEDE PRESTAR 
     @Override

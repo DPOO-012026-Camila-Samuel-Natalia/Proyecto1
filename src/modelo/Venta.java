@@ -1,4 +1,6 @@
 package modelo;
+import java.util.Date;
+
 
 // Esta clase representa una venta general.
 // Sirve como base para VentaCafe.
@@ -11,6 +13,8 @@ public abstract class Venta
 	private Usuario comprador;
 	
 	private boolean cerrada;
+	private Date fecha;  
+	private double descuento = 0;
 
 	// Constructor
 	public Venta(String codigo, Usuario comprador)
@@ -18,6 +22,7 @@ public abstract class Venta
 		this.codigo = codigo;
 		this.comprador = comprador;
 		this.cerrada = false;
+		this.fecha = new Date();
 	}
 
 	// Devuelve el código
@@ -38,7 +43,24 @@ public abstract class Venta
 	public void cerrar() {
 		this.cerrada = true;
 	}
-
+	public Date getFecha() { return fecha; }
+	
 	// Cada tipo de venta calcula su total de manera distinta
 	public abstract double calcularTotal();
+	
+
+	public void setDescuento(double descuento) { 
+		this.descuento = descuento; }
+	public double getDescuento() { 
+		return descuento; }
 }
+
+
+
+
+
+
+
+
+
+

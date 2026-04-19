@@ -1,22 +1,27 @@
 package presentacion;
 
-import logica.Administrador;
-import logica.Bebida;
-import logica.BoardgameCafe;
-import logica.Cliente;
-import logica.Cocinero;
-import logica.CopiaJuego;
-import logica.DetalleVentaCafe;
-import logica.DetalleVentaJuego;
-import logica.JuegoMesa;
-import logica.Mesa;
-import logica.Mesero;
-import logica.Pasteleria;
-import logica.Prestamo;
-import logica.SolicitudCambioTurno;
-import logica.SugerenciaPlatillo;
-import logica.VentaCafe;
-import logica.VentaJuego;
+import modelo.Administrador;
+import modelo.Bebida;
+import modelo.BoardgameCafe;
+import modelo.Cliente;
+import modelo.Cocinero;
+import modelo.DetalleVentaCafe;
+import modelo.DetalleVentaJuego;
+import modelo.JuegoDeMesa;
+import modelo.Mesa;
+import modelo.Mesero;
+import modelo.Pasteleria;
+import modelo.Prestamo;
+import modelo.SolicitudCambioTurno;
+import modelo.SugerenciaPlatillo;
+import modelo.VentaCafe;
+import modelo.VentaJuego;
+import modelo.Empleado;
+import modelo.PuedePrestar;
+import modelo.Usuario;
+import modelo.Turno;
+import modelo.ProductoMenu;
+
 import persistencia.CentralPersistencia;
 import persistencia.PersistenciaBoardGameCafeJSON;
 
@@ -24,7 +29,7 @@ public class Principal
 {
 	public static void main(String[] args)
 	{
-		BoardgameCafe cafe = new BoardgameCafe();
+		BoardgameCafe cafe = new BoardgameCafe(20);
 
 		// =========================
 		// ADMINISTRADOR
@@ -36,18 +41,23 @@ public class Principal
 		// =========================
 		// CLIENTES
 		// =========================
-		Cliente c1 = new Cliente("1", "Samuel", "samuel123", "1234", 19);
-		Cliente c2 = new Cliente("2", "Laura", "laura456", "abcd", 12);
+		Cliente c1 = new Cliente("1", "Samuel", "samuel123", "1234");
+		Cliente c2 = new Cliente("2", "Laura", "laura456", "abcd");
 		cafe.agregarCliente(c1);
 		cafe.agregarCliente(c2);
 
 		// =========================
 		// EMPLEADOS
 		// =========================
-		Mesero m1 = new Mesero("10", "Carlos", "carlosm", "1111", "mañana");
-		Cocinero co1 = new Cocinero("11", "Pedro", "pedroc", "2222", "tarde", "postres");
+		Mesero m1 = new Mesero("10", "Carlos", "carlosm", "1111");
+		Cocinero co1 = new Cocinero("11", "Pedro", "pedroc", "2222");
+		Mesero m2 = new Mesero("11", "Ana", "anam", "2222");
 		cafe.agregarEmpleado(m1);
+		cafe.agregarEmpleado(m2);
 		cafe.agregarEmpleado(co1);
+		m1.agregarJuegoQueExplica("Catan");
+		
+		
 
 		// =========================
 		// MESAS
@@ -60,69 +70,167 @@ public class Principal
 		// =========================
 		// JUEGOS
 		// =========================
-		JuegoMesa j1 = new JuegoMesa("Catan", 3, 4, 10);
-		JuegoMesa j2 = new JuegoMesa("Uno", 2, 10, 5);
+		JuegoDeMesa j1 = new JuegoDeMesa("Catan", 2000, "Hasbro", 3, 6, 10, "TABLERO", true, 1, 10, 50000);
+		JuegoDeMesa j2 = new JuegoDeMesa("Uno",1980, "Mattel", 2, 10, 5, "CARTAS", false, 6, 5, 30000);
+		JuegoDeMesa j3 = new JuegoDeMesa("Twister",1995, "Mattel", 2, 4, 5, "ACCION", false, 6, 5, 40000);
 		cafe.agregarJuego(j1);
 		cafe.agregarJuego(j2);
+		cafe.agregarJuego(j3);
+
+		
+		
+		
+		// =========================
+		// TURNOS
+		// =========================
+		Turno lunes = new Turno("LUNES");
+		Turno martes = new Turno("MARTES");
+		Turno miercoles = new Turno("MIERCOLES");
+		Turno jueves = new Turno("JUEVES");
+		Turno viernes = new Turno("VIERNES");
+		Turno sabado = new Turno("SABADO");
+		Turno domingo = new Turno("DOMINGO");
+		
+		cafe.agregarTurno(lunes);
+		cafe.agregarTurno(martes);
+		cafe.agregarTurno(miercoles);
+		cafe.agregarTurno(jueves);
+		cafe.agregarTurno(viernes);
+		cafe.agregarTurno(sabado);
+		cafe.agregarTurno(domingo);
+
+
 
 		// =========================
-		// COPIAS
+		// TURNOS ASIGNAR E INICIAR
 		// =========================
-		CopiaJuego copia1 = new CopiaJuego(j1);
-		CopiaJuego copia2 = new CopiaJuego(j1);
-		CopiaJuego copia3 = new CopiaJuego(j2);
-		cafe.agregarCopia(copia1);
-		cafe.agregarCopia(copia2);
-		cafe.agregarCopia(copia3);
+		cafe.asignarTurno(m1, lunes);
+		cafe.asignarTurno(m2, lunes);
+		cafe.asignarTurno(co1, lunes);
+		m1.iniciarTurno();
+		m2.iniciarTurno();
+		co1.iniciarTurno();
+		
+		
+		// =========================
+		// PRODUCTOS MENÚ
+		// =========================
+		Bebida b1 = new Bebida("Cafe Americano", 7000, false, true);
+		Bebida b2 = new Bebida("Cerveza", 9000, true, false);
+		Pasteleria pa1 = new Pasteleria("Brownie", 8000);
+		Pasteleria pa2 = new Pasteleria("Galleta", 5000);
+		pa1.agregarAlergeno("gluten");
 
-		// =========================
-		// SESIÓN DE MESA
-		// =========================
-		mesa1.iniciarSesion(4, false, true);
+		cafe.agregarProductoMenu(b1);
+		cafe.agregarProductoMenu(b2);
+		cafe.agregarProductoMenu(pa1);
+		cafe.agregarProductoMenu(pa2);
 
+		System.out.println("Productos del menu:");
+		for (ProductoMenu p : cafe.getProductosMenu()) {
+		    System.out.println(p);
+		}
+		
+		
+		
 		// =========================
 		// FASE 1: PRÉSTAMOS
 		// =========================
-		boolean prestamo1 = cafe.prestarJuego("1", 1, "Catan");
-		System.out.println("¿Se pudo prestar Catan a Samuel? " + prestamo1);
+		System.out.println("\n===== FASE 1: PRÉSTAMOS =====");
+		
+		// Recibir clientes
+		try {
+		    cafe.recibirCliente(c1, 3, false, false);
+		    System.out.println(c1.getNombre()+ "recibido en mesa: " + c1.getMesaActual().getNumero());
+		} catch (IllegalStateException e) {
+		    System.out.println("Error: " + e.getMessage());
+		}
 
-		boolean prestamo2 = cafe.prestarJuego("2", 1, "Uno");
-		System.out.println("¿Se pudo prestar Uno a Laura? " + prestamo2);
+		try {
+		    cafe.recibirCliente(c2, 2, true, false);
+		    System.out.println(c2.getNombre()+"recibida en mesa: " + c2.getMesaActual().getNumero());
+		} catch (IllegalStateException e) {
+		    System.out.println("Error: " + e.getMessage());
+		}
+		
+		System.out.println("\nCatálogo juegos disponibles para préstamo");
+		for (JuegoDeMesa j : cafe.getJuegosDisponiblesPrestamo()) {
+		    System.out.println(j);
+		}
+		
+		// Realizar prestamos
+		Prestamo pre1 = null;
+		
+		try {
+		    pre1 = cafe.crearPrestamo(c1, j1);
+		    System.out.println("Prestamo creado: " + pre1);
+		    System.out.println("Copias disponibles Catan: " + j1.getTotalCopiasPrestamo());
+		} catch (IllegalStateException e) {
+		    System.out.println("Error: " + e.getMessage());
+		}
+		
+		try {
+		    Prestamo pre2 = cafe.crearPrestamo(c1, j2);
+		    System.out.println("Segundo prestamo creado: " + pre2);
+		} catch (IllegalStateException e) {
+		    System.out.println("Error: " + e.getMessage());
+		}
+		
+		
+		System.out.println("\n Prueba error: prestar un tercer juego");
+		try {
+		    Prestamo pre3 = cafe.crearPrestamo(c1, j3);
+		    System.out.println("Debio haber fallado");
+		} catch (IllegalStateException e) {
+		    System.out.println("Error esperado: " + e.getMessage());
+		}
+		
+		System.out.println("\n Prueba error: juego no disponible");
+		try {
+		    cafe.crearPrestamo(c2, j1);  // todas las copias de Catan prestadas
+		    System.out.println("Debio haber fallado");
+		} catch (IllegalStateException e) {
+		    System.out.println("Error esperado: " + e.getMessage());
+		}
 
-		boolean prestamo3 = cafe.prestarJuego("1", 1, "Catan");
-		System.out.println("¿Se pudo prestar un tercer juego en la misma mesa? " + prestamo3);
+		// ERROR ESPERADO: cliente sin mesa
+		System.out.println("\n Prueba error: cliente sin mesa ");
+		try {
+		    Cliente c4 = new Cliente("4", "Pedro", "pedro123", "perro");
+		    Prestamo pre4 = cafe.crearPrestamo(c4, j2);
+		    System.out.println("Debio haber fallado");
+		} catch (IllegalStateException e) {
+		    System.out.println("Error esperado: " + e.getMessage());
+		}
+		
+		
+		
 
 		System.out.println();
 		System.out.println("Estado general del sistema:");
 		System.out.println(cafe);
 
 		System.out.println();
-		System.out.println("Copias disponibles de Catan: " + cafe.contarCopiasDisponibles("Catan"));
-		System.out.println("Copias disponibles de Uno: " + cafe.contarCopiasDisponibles("Uno"));
+		System.out.println("Copias disponibles de Catan: " + j1.getTotalCopiasPrestamo());
+		System.out.println("Copias disponibles de Uno: " + j2.getTotalCopiasPrestamo());
 
 		System.out.println();
-		System.out.println("Préstamos registrados:");
-		for (int i = 0; i < cafe.getPrestamos().size(); i++)
-		{
-			System.out.println(cafe.getPrestamos().get(i));
-		}
-
-		if (cafe.getPrestamos().size() > 0)
-		{
-			Prestamo primerPrestamo = cafe.getPrestamos().get(0);
-			cafe.devolverJuego(primerPrestamo);
-
-			System.out.println();
-			System.out.println("Se devolvió el primer préstamo.");
-			System.out.println(primerPrestamo);
-		}
-
+		
+		// Ver préstamos activos
+				System.out.println("\n-- Préstamos activos --");
+				for (Prestamo p : cafe.getPrestamosActivos()) {
+				    System.out.println(p);
+				}
+				
+		// Retirar cliente
+		cafe.retirarCliente(c1);
+		System.out.println("Cliente retirado");
+		System.out.println(" Prestamo activo: " + pre1.isActivo());  // false
+		System.out.println("  Copias disponibles Catan después de devolver: " + j1.getTotalCopiasPrestamo()); 
 		System.out.println();
+		
 		System.out.println("Estado final del sistema:");
 		System.out.println(cafe);
-
-		System.out.println();
-		System.out.println("Copias disponibles de Catan después de devolver: " + cafe.contarCopiasDisponibles("Catan"));
 
 		// =========================
 		// FASE 2: MENÚ Y VENTAS CAFÉ

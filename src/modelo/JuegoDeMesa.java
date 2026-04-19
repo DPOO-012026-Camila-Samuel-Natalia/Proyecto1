@@ -23,7 +23,7 @@ public class JuegoDeMesa {
 	}
 	
 	public JuegoDeMesa(String nombre, int anioPublicacion, String empresa, int minJugadores, int maxJugadores,
-			int edadMinima, String categoria, boolean dificil, int totalCopiasPrestamo, int copiasEnUso,
+			int edadMinima, String categoria, boolean dificil, int totalCopiasPrestamo,
 			int copiasVenta, double precioUnitario) {
 		super();
 		this.nombre = nombre;
@@ -35,7 +35,7 @@ public class JuegoDeMesa {
 		this.categoria = categoria;
 		this.dificil = dificil;
 		this.totalCopiasPrestamo = totalCopiasPrestamo;
-		this.copiasEnUso = copiasEnUso;
+		this.copiasEnUso = 0;
 		this.copiasVenta = copiasVenta;
 		this.precioUnitario = precioUnitario;
 	}

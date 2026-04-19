@@ -9,9 +9,8 @@ public class Mesero extends Empleado
 	private ArrayList<String> juegosQueExplica;
 
 	// Constructor
-	public Mesero(String id, String nombre, String login, String password, double descuentoPropio,
-			double descuentoCompartido) {
-		super(id, nombre, login, password, descuentoPropio, descuentoCompartido);
+	public Mesero(String id, String nombre, String login, String password) {
+		super(id, nombre, login, password);
 		this.juegosQueExplica = new ArrayList<String>();
 	}
 
@@ -33,7 +32,7 @@ public class Mesero extends Empleado
 	}
 
 	// Revisa si sabe explicar un juego
-	public boolean sabeExplicarJuego(String nombreJuego)
+	public boolean dominaJuego(String nombreJuego)
 	{
 		for (int i = 0; i < juegosQueExplica.size(); i++)
 		{

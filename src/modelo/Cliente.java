@@ -7,6 +7,7 @@ public class Cliente extends Usuario implements PuedePrestar{
 	private int puntosFidelidad = 0;
 	private Mesa mesaActual = null;
 	private List<JuegoDeMesa> juegosPrestados = new ArrayList<>() ;  // max 2
+	private String codigoDescuento;
 	
 
 	public Cliente(String id, String nombre, String login, String password) {
@@ -14,6 +15,16 @@ public class Cliente extends Usuario implements PuedePrestar{
 		
 	}
 
+	public void setCodigoDescuento(String codigo) { 
+	    this.codigoDescuento = codigo; 
+	}
+	
+	public String getCodigoDescuento() { 
+		return codigoDescuento; 
+		}
+	public boolean tieneDescuento() { 
+		return codigoDescuento != null; 
+		}
 
 	public int getPuntosFidelidad() {
 		return puntosFidelidad;
