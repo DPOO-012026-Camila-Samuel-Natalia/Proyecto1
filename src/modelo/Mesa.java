@@ -4,8 +4,8 @@ public class Mesa {
 	private int numero;
 	private int capacidad;
 	private int numPersonas;
-	private boolean ninos;
-	private boolean menoresDeEdad;
+	private boolean ninos; // menores de 5 años
+	private boolean menoresDeEdad; //menores de 18 
 	
 	
 	
@@ -30,7 +30,7 @@ public class Mesa {
 	public boolean isNinos() {
 		return ninos;
 	}
-	public boolean isMenoresDeEdad() {
+	public boolean hayMenoresDeEdad() {
 		return menoresDeEdad;
 	} 
 	
@@ -46,6 +46,11 @@ public class Mesa {
 	}
 	
 	
+	public void liberar() {
+		this.numPersonas = 0;
+		this.ninos = false;
+		this.menoresDeEdad = false;
+	}
 	
 	
 	

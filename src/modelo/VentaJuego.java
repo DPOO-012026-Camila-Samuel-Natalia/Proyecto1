@@ -10,9 +10,9 @@ public class VentaJuego extends Venta
 	private ArrayList<DetalleVentaJuego> detalles;
 
 	// Constructor
-	public VentaJuego(String codigo, Cliente cliente)
+	public VentaJuego(String codigo, Usuario comprador)
 	{
-		super(codigo, cliente);
+		super(codigo, comprador);
 		this.detalles = new ArrayList<DetalleVentaJuego>();
 	}
 
@@ -58,7 +58,7 @@ public class VentaJuego extends Venta
 	public String toString()
 	{
 		return "VentaJuego [codigo=" + getCodigo()
-				+ ", cliente=" + getCliente().getNombre()
+				+ ", cliente=" + getComprador().getNombre()
 				+ ", subtotal=" + calcularSubtotal()
 				+ ", iva=" + calcularIVA()
 				+ ", total=" + calcularTotal() + "]";

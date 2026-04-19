@@ -5,7 +5,7 @@ package modelo;
 public class DetalleVentaJuego
 {
 	// juego vendido
-	private JuegoMesa juego;
+	private JuegoDeMesa juego;
 	
 	// cantidad vendida
 	private int cantidad;
@@ -14,15 +14,15 @@ public class DetalleVentaJuego
 	private double precioUnitario;
 
 	// Constructor
-	public DetalleVentaJuego(JuegoMesa juego, int cantidad, double precioUnitario)
+	public DetalleVentaJuego(JuegoDeMesa juego, int cantidad)
 	{
 		this.juego = juego;
 		this.cantidad = cantidad;
-		this.precioUnitario = precioUnitario;
+		this.precioUnitario = this.juego.getPrecioUnitario();
 	}
 
 	// devuelve el juego
-	public JuegoMesa getJuego()
+	public JuegoDeMesa getJuego()
 	{
 		return juego;
 	}
@@ -45,12 +45,7 @@ public class DetalleVentaJuego
 		this.cantidad = cantidad;
 	}
 
-	// cambia el precio unitario
-	public void setPrecioUnitario(double precioUnitario)
-	{
-		this.precioUnitario = precioUnitario;
-	}
-
+	
 	// calcula el subtotal de esta línea
 	public double calcularSubtotal()
 	{

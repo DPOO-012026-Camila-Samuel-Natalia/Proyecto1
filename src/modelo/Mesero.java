@@ -9,9 +9,9 @@ public class Mesero extends Empleado
 	private ArrayList<String> juegosQueExplica;
 
 	// Constructor
-	public Mesero(String id, String nombre, String login, String password, String turno)
-	{
-		super(id, nombre, login, password, turno);
+	public Mesero(String id, String nombre, String login, String password, double descuentoPropio,
+			double descuentoCompartido) {
+		super(id, nombre, login, password, descuentoPropio, descuentoCompartido);
 		this.juegosQueExplica = new ArrayList<String>();
 	}
 
@@ -20,6 +20,8 @@ public class Mesero extends Empleado
 	{
 		return juegosQueExplica;
 	}
+
+	
 
 	// Agrega un juego a la lista
 	public void agregarJuegoQueExplica(String nombreJuego)
@@ -43,9 +45,5 @@ public class Mesero extends Empleado
 		return false;
 	}
 
-	@Override
-	public String toString()
-	{
-		return "Mesero [id=" + getId() + ", nombre=" + getNombre() + ", turno=" + getTurno() + "]";
-	}
+	
 }

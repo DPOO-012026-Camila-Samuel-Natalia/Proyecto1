@@ -8,18 +8,15 @@ public class VentaCafe extends Venta
 {
 	// Lista de productos vendidos en esta venta
 	private ArrayList<DetalleVentaCafe> detalles;
-	
-	// Mesa asociada a la venta
-	private Mesa mesa;
+
 	
 	// Indica si se cobra propina
 	private boolean cobraPropina;
 
 	// Constructor
-	public VentaCafe(String codigo, Cliente cliente, Mesa mesa, boolean cobraPropina)
+	public VentaCafe(String codigo, Cliente cliente, boolean cobraPropina)
 	{
 		super(codigo, cliente);
-		this.mesa = mesa;
 		this.cobraPropina = cobraPropina;
 		this.detalles = new ArrayList<DetalleVentaCafe>();
 	}
@@ -31,9 +28,16 @@ public class VentaCafe extends Venta
 	}
 
 	// Devuelve la mesa
-	public Mesa getMesa()
-	{
-		return mesa;
+	public Mesa getMesa() {
+	    if (!(getComprador() instanceof Cliente))
+	        throw new IllegalStateException("El comprador no es un cliente");
+	    
+	    Cliente cliente = (Cliente) getComprador();
+	    
+	    if (!cliente.estaEnCafe())
+	        throw new IllegalStateException("Cliente no tiene mesa asignada");
+	    
+	    return cliente.getMesaActual();
 	}
 
 	// Devuelve si cobra propina
@@ -80,6 +84,9 @@ public class VentaCafe extends Venta
 		return propina;
 	}
 
+	public Cliente getCliente() {
+        return (Cliente) getComprador();
+    }
 	// Calcula el total final
 	@Override
 	public double calcularTotal()
@@ -90,8 +97,8 @@ public class VentaCafe extends Venta
 	@Override
 	public String toString()
 	{
-		return "VentaCafe [codigo=" + getCodigo() + ", cliente=" + getCliente().getNombre()
-				+ ", mesa=" + mesa.getNumero() + ", subtotal=" + calcularSubtotal()
+		return "VentaCafe [codigo=" + getCodigo() + ", cliente=" + getComprador().getNombre()
+				+ ", mesa=" + this.getMesa().getNumero() + ", subtotal=" + calcularSubtotal()
 				+ ", impuesto=" + calcularImpuestoConsumo()
 				+ ", propina=" + calcularPropina()
 				+ ", total=" + calcularTotal() + "]";

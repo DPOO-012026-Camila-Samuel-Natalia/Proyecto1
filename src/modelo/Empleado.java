@@ -1,79 +1,75 @@
 package modelo;
 
-// esta clase es abstracta porque no tiene sentido crear
+import java.util.ArrayList;
+import java.util.List;
+
+
 // un empleado generico. Solo sirve como base para Mesero y Cocinero.
-public abstract class Empleado extends Usuario
-{
-	// turno del empleado
-	private String turno;
-	
-	// indica si esta trabajando
-	private boolean enTurno;
-	
-	// indica si esta atendiendo una tarea
-	private boolean atendiendo;
+public abstract class Empleado extends Usuario implements PuedePrestar {
 
-	// Constructor
-	public Empleado(String id, String nombre, String login, String password, String turno)
-	{
-		super(id, nombre, login, password);
-		this.turno = turno;
-		this.enTurno = false;
-		this.atendiendo = false;
-	}
+    private ArrayList<Turno> turnos;
+    private boolean enTurno;
+    private double descuentoPropio;
+    private double descuentoCompartido;
+    private List<JuegoDeMesa> juegosPrestados;
 
-	// devuelve el turno
-	public String getTurno()
-	{
-		return turno;
-	}
+    
+    public Empleado(String id, String nombre, String login, String password,
+                    double descuentoPropio, double descuentoCompartido) {
+        super(id, nombre, login, password);
+        this.turnos = new ArrayList<>();
+        this.enTurno = false;
+        this.descuentoPropio = descuentoPropio;
+        this.descuentoCompartido = descuentoCompartido;
+        this.juegosPrestados = new ArrayList<>();
+    }
 
-	// devuelve si esta en turno
-	public boolean isEnTurno()
-	{
-		return enTurno;
-	}
+    //  TURNOS 
+    public void agregarTurno(Turno turno)  { turnos.add(turno); }
+    public void quitarTurno(Turno turno)   { turnos.remove(turno); }
+    public ArrayList<Turno> getTurnos()    { return turnos; }
 
-	// devuelve si esta atendiendo
-	public boolean isAtendiendo()
-	{
-		return atendiendo;
-	}
+    // ESTADO
+    public boolean isEnTurno()     { return enTurno; }
+    
 
-	// cambia el turno
-	public void setTurno(String turno)
-	{
-		this.turno = turno;
-	}
+    public void iniciarTurno()  { enTurno = true; }
+    public void terminarTurno() { enTurno = false; }
 
-	// marca que empieza turno
-	public void iniciarTurno()
-	{
-		enTurno = true;
-	}
+  
 
-	// marca que termina turno
-	public void terminarTurno()
-	{
-		enTurno = false;
-		atendiendo = false;
-	}
+    //  DESCUENTOS 
+    public double getDescuentoPropio()       { return descuentoPropio; }
+    public double getDescuentoCompartido()   { return descuentoCompartido; }
 
-	// marca que empieza a atender
-	public void empezarAtencion()
-	{
-		atendiendo = true;
-	}
+    // PUEDE PRESTAR 
+    @Override
+    public boolean puedePedirPrestamo() {
+        if (enTurno) return false;
+        return juegosPrestados.size() < 2;
+    }
 
-	// marca que termina de atender
-	public void terminarAtencion()
-	{
-		atendiendo = false;
-	}
+    @Override
+    public void agregarJuegoPrestado(JuegoDeMesa juego) { juegosPrestados.add(juego); }
 
-	@Override
-	public String toString()
-	{
-		return "Empleado [id=" + getId() + ", nombre=" + getNombre() + ", turno=" + turno + "]";
-	}
+    @Override
+    public void quitarJuegoPrestado(JuegoDeMesa juego)  { juegosPrestados.remove(juego); }
+
+    @Override
+    public List<JuegoDeMesa> getJuegosPrestados()       { return juegosPrestados; }
+
+    // TO STRING 
+    @Override
+    public String toString() {
+       
+        String listaTurnos = "";
+        for (int i = 0; i < turnos.size(); i++) {
+            listaTurnos += turnos.get(i).toString();
+            if (i < turnos.size() - 1) listaTurnos += ", ";
+        }
+        return "Empleado [id=" + getId() 
+            + ", nombre=" + getNombre() 
+            + ", enTurno=" + enTurno
+            + ", turnos=[" + listaTurnos + "]]";
+    }
 }

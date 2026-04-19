@@ -48,4 +48,6 @@ public class Bebida extends ProductoMenu
 		return "Bebida [nombre=" + getNombre() + ", precio=" + getPrecio()
 				+ ", alcoholica=" + alcoholica + ", caliente=" + caliente + "]";
 	}
+
+
 }

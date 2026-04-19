@@ -7,17 +7,20 @@ public class Cocinero extends Empleado
 	private String especialidad;
 
 	// Constructor
-	public Cocinero(String id, String nombre, String login, String password, String turno, String especialidad)
-	{
-		super(id, nombre, login, password, turno);
+	
+	public Cocinero(String id, String nombre, String login, String password, double descuentoPropio,
+			double descuentoCompartido, String especialidad) {
+		super(id, nombre, login, password, descuentoPropio, descuentoCompartido);
 		this.especialidad = especialidad;
 	}
-
+	
 	// devuelve la especialidad
 	public String getEspecialidad()
 	{
 		return especialidad;
 	}
+
+	
 
 	// cambia la especialidad
 	public void setEspecialidad(String especialidad)
@@ -25,9 +28,5 @@ public class Cocinero extends Empleado
 		this.especialidad = especialidad;
 	}
 
-	@Override
-	public String toString()
-	{
-		return "Cocinero [id=" + getId() + ", nombre=" + getNombre() + ", especialidad=" + especialidad + "]";
-	}
+	
 }

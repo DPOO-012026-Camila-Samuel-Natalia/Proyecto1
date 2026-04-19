@@ -17,6 +17,7 @@ public class SugerenciaPlatillo
 	
 	// Estado de la sugerencia: Pendiente, Aprobada o Rechazada
 	private String estado;
+	
 
 	// Constructor
 	public SugerenciaPlatillo(String codigo, Empleado empleado, String nombrePlatillo, String descripcion)
@@ -80,4 +81,14 @@ public class SugerenciaPlatillo
 				+ ", nombrePlatillo=" + nombrePlatillo
 				+ ", estado=" + estado + "]";
 	}
+
+	public ProductoMenu crearProducto(String tipo, double precio) {
+	    if (tipo.equals("BEBIDA")) {
+	        return new Bebida(nombrePlatillo, precio, false, false);
+	    } else {
+	        return new Pasteleria(nombrePlatillo, precio);
+	    }
+	}
+
+
 }

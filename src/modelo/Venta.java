@@ -8,13 +8,16 @@ public abstract class Venta
 	private String codigo;
 	
 	// Cliente que hizo la compra
-	private Cliente cliente;
+	private Usuario comprador;
+	
+	private boolean cerrada;
 
 	// Constructor
-	public Venta(String codigo, Cliente cliente)
+	public Venta(String codigo, Usuario comprador)
 	{
 		this.codigo = codigo;
-		this.cliente = cliente;
+		this.comprador = comprador;
+		this.cerrada = false;
 	}
 
 	// Devuelve el código
@@ -23,10 +26,17 @@ public abstract class Venta
 		return codigo;
 	}
 
+	public boolean isCerrada() {
+		return this.cerrada;
+	}
+	
 	// Devuelve el cliente
-	public Cliente getCliente()
+	public Usuario getComprador()
 	{
-		return cliente;
+		return comprador;
+	}
+	public void cerrar() {
+		this.cerrada = true;
 	}
 
 	// Cada tipo de venta calcula su total de manera distinta

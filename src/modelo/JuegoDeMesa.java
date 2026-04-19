@@ -8,13 +8,13 @@ public class JuegoDeMesa {
 	private int minJugadores;
 	private int maxJugadores;
 	private int edadMinima; // 0 si no tiene
-	private String categoria;
+	private String categoria; //ACCION O CARTAS O TABLERO
 	private boolean dificil;
 	private int totalCopiasPrestamo;
 	private int copiasEnUso; 
 	private int copiasVenta; // disponibles para vender
 	// La idea es luego (interface o donde se necesite) hacer un filtro de la lista de juegos mostrando solo los que esten disponibles para prestamo y los que esten disponibles para venta
-	
+	private double precioUnitario;
 	
 	
 	// Prestamo
@@ -24,7 +24,7 @@ public class JuegoDeMesa {
 	
 	public JuegoDeMesa(String nombre, int anioPublicacion, String empresa, int minJugadores, int maxJugadores,
 			int edadMinima, String categoria, boolean dificil, int totalCopiasPrestamo, int copiasEnUso,
-			int copiasVenta) {
+			int copiasVenta, double precioUnitario) {
 		super();
 		this.nombre = nombre;
 		this.anioPublicacion = anioPublicacion;
@@ -37,6 +37,7 @@ public class JuegoDeMesa {
 		this.totalCopiasPrestamo = totalCopiasPrestamo;
 		this.copiasEnUso = copiasEnUso;
 		this.copiasVenta = copiasVenta;
+		this.precioUnitario = precioUnitario;
 	}
 
 	public boolean estaDisponiblePrestamo() {
@@ -68,17 +69,18 @@ public class JuegoDeMesa {
 
 	public void agregarCopiasPrestamo (int cantidad) {totalCopiasPrestamo += cantidad;}
 	public void agregarCopiasVenta (int cantidad) {copiasVenta+= cantidad;}
-	public void moverPrestamoAVenta() {
+	public void moverVentaAPrestamo() {
 		if (copiasVenta == 0) throw new IllegalStateException("No hay copias en venta");
 		copiasVenta --;
 		totalCopiasPrestamo ++;
 		
 	}
 	
-	
-	
-	
-
+	public boolean soloAdultos() {
+		if (this.edadMinima == 18) {return true;}
+		return false;
+		
+	}
 	
 
 	public int getTotalCopiasPrestamo() {
@@ -121,8 +123,16 @@ public class JuegoDeMesa {
 		return dificil;
 	}
 	
+	public double getPrecioUnitario() {
+		return this.precioUnitario;
+	}
 	
-	
-	
+
+	// cambia el precio unitario
+	public void setPrecioUnitario(double precioUnitario)
+		{
+			this.precioUnitario = precioUnitario;
+		}
+
 }
 
