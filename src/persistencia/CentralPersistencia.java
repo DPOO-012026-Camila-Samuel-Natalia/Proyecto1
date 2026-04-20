@@ -1,23 +1,29 @@
 package persistencia;
 
-import logica.BoardgameCafe;
+import modelo.BoardgameCafe;
 
+// Esta clase funciona como intermediaria entre el sistema y la persistencia
+// Permite desacoplar la logica del tipo de almacenamiento (JSON, plano, etc.)
 public class CentralPersistencia
 {
-	private IPersistenciaBoardGameCafe persistencia;
+    // Referencia a la implementacion de persistencia (JSON en este caso)
+    private IPersistenciaBoardGameCafe persistencia;
 
-	public CentralPersistencia(IPersistenciaBoardGameCafe persistencia)
-	{
-		this.persistencia = persistencia;
-	}
+    // Constructor: recibe la implementacion concreta
+    public CentralPersistencia(IPersistenciaBoardGameCafe persistencia)
+    {
+        this.persistencia = persistencia;
+    }
 
-	public void guardar(BoardgameCafe cafe)
-	{
-		persistencia.guardar(cafe);
-	}
+    // Metodo para guardar el sistema
+    public void guardar(BoardgameCafe cafe)
+    {
+        persistencia.guardar(cafe);
+    }
 
-	public BoardgameCafe cargar()
-	{
-		return persistencia.cargar();
-	}
+    // Metodo para cargar el sistema
+    public BoardgameCafe cargar()
+    {
+        return persistencia.cargar();
+    }
 }

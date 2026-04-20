@@ -138,6 +138,7 @@ public class JuegoDeMesa {
 			this.precioUnitario = precioUnitario;
 		}
 
+<<<<<<< Updated upstream
 	@Override
 	public String toString() {
 	    return "JuegoDeMesa [nombre=" + nombre 
@@ -153,5 +154,12 @@ public class JuegoDeMesa {
 	    JuegoDeMesa otro = (JuegoDeMesa) obj;
 	    return this.nombre.equals(otro.nombre);
 	}
+=======
+	// devuelve cuantas copias estan en uso
+	public int getCopiasEnUso() {
+	    return copiasEnUso;
+	}
+
+>>>>>>> Stashed changes
 }
 
