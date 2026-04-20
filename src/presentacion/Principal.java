@@ -530,6 +530,29 @@ public class Principal
 		System.out.println("\n-- Estado final del sistema --");
 		System.out.println(cafe);
 		
+		// =========================
+		// PERSISTENCIA
+		// =========================
+
+		// Crear persistencia (ruta del archivo)
+		PersistenciaBoardGameCafeJSON persistenciaJSON =
+		        new PersistenciaBoardGameCafeJSON("src/datos/boardgamecafe.txt");
+
+		// Crear central de persistencia
+		CentralPersistencia central = new CentralPersistencia(persistenciaJSON);
+
+		// Guardar sistema
+		central.guardar(cafe);
+
+		System.out.println("\nSistema guardado correctamente");
+
+		// Cargar sistema
+		BoardgameCafe cafeCargado = central.cargar();
+
+		System.out.println("\nSistema cargado desde archivo:");
+		System.out.println(cafeCargado);
 		
 		
-}}
+}
+	
+}
