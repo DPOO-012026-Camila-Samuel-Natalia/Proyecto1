@@ -46,7 +46,10 @@ public class PersistenciaBoardGameCafeJSON implements IPersistenciaBoardGameCafe
                 }
 
                 String codigo = c.getCodigoDescuento();
-                if (codigo == null) codigo = "null";
+                if (codigo == null)
+                {
+                    codigo = "null";
+                }
 
                 out.println("CLIENTE;" + c.getId() + ";" + c.getNombre() + ";" + c.getLogin() + ";" + c.getPassword()
                         + ";" + c.getPuntosFidelidad() + ";" + mesa + ";" + codigo);
@@ -65,7 +68,7 @@ public class PersistenciaBoardGameCafeJSON implements IPersistenciaBoardGameCafe
                 out.println("EMPLEADO;" + tipo + ";" + e.getId() + ";" + e.getNombre() + ";" + e.getLogin() + ";"
                         + e.getPassword() + ";" + e.isEnTurno());
 
-                // Juegos que explica
+                // Juegos que explica el mesero
                 if (e instanceof Mesero)
                 {
                     Mesero m = (Mesero) e;
@@ -128,7 +131,7 @@ public class PersistenciaBoardGameCafeJSON implements IPersistenciaBoardGameCafe
     }
 
     // =========================
-    // CARGAR (SIN break)
+    // CARGAR
     // =========================
     @Override
     public BoardgameCafe cargar()
@@ -140,7 +143,7 @@ public class PersistenciaBoardGameCafeJSON implements IPersistenciaBoardGameCafe
             BufferedReader br = new BufferedReader(new FileReader(ruta));
             String linea = br.readLine();
 
-            // Buscar capacidad SIN break
+            // Buscar capacidad sin usar break
             while (linea != null)
             {
                 String[] p = linea.split(";");
@@ -171,14 +174,12 @@ public class PersistenciaBoardGameCafeJSON implements IPersistenciaBoardGameCafe
                 {
                     cafe.setAdministrador(new Administrador(p[1], p[2], p[3], p[4]));
                 }
-
                 else if (p[0].equals("CLIENTE"))
                 {
                     Cliente c = new Cliente(p[1], p[2], p[3], p[4]);
                     c.agregarPuntos(Integer.parseInt(p[5]));
                     cafe.agregarCliente(c);
                 }
-
                 else if (p[0].equals("EMPLEADO"))
                 {
                     Empleado e;
@@ -199,7 +200,6 @@ public class PersistenciaBoardGameCafeJSON implements IPersistenciaBoardGameCafe
 
                     cafe.agregarEmpleado(e);
                 }
-
                 else if (p[0].equals("MESA"))
                 {
                     Mesa m = new Mesa(Integer.parseInt(p[1]), Integer.parseInt(p[2]));
@@ -213,7 +213,6 @@ public class PersistenciaBoardGameCafeJSON implements IPersistenciaBoardGameCafe
 
                     cafe.agregarMesa(m);
                 }
-
                 else if (p[0].equals("JUEGO"))
                 {
                     JuegoDeMesa j = new JuegoDeMesa(
@@ -233,44 +232,11 @@ public class PersistenciaBoardGameCafeJSON implements IPersistenciaBoardGameCafe
                     j.setCopiasEnUso(Integer.parseInt(p[10]));
                     cafe.agregarJuego(j);
                 }
-
                 else if (p[0].equals("TURNO"))
                 {
                     cafe.agregarTurno(new Turno(p[1]));
                 }
 
-<<<<<<< Updated upstream
-		return datos;
-	}
-}
-
-
-
-
-
-//=========================
-		// PERSISTENCIA
-		// =========================
-
-		// Se crea la persistencia apuntando a la carpeta datos dentro de src
-		PersistenciaBoardGameCafeJSON persistenciaJSON = new PersistenciaBoardGameCafeJSON("src/datos/boardgamecafe.json");
-
-		// Se crea la central de persistencia
-		CentralPersistencia central = new CentralPersistencia(persistenciaJSON);
-
-		// Se guarda el sistema
-		central.guardar(cafe);
-
-		System.out.println();
-		System.out.println("Se guardó el sistema en el archivo JSON.");
-
-		// Se carga el sistema desde el archivo
-		BoardgameCafe cafeCargado = central.cargar();
-
-		System.out.println("Sistema cargado desde persistencia:");
-		System.out.println(cafeCargado);
-	}
-=======
                 linea = br.readLine();
             }
 
@@ -284,4 +250,3 @@ public class PersistenciaBoardGameCafeJSON implements IPersistenciaBoardGameCafe
         return cafe;
     }
 }
->>>>>>> Stashed changes

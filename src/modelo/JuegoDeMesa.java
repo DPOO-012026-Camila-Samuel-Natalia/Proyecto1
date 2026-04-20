@@ -134,11 +134,20 @@ public class JuegoDeMesa {
 
 	// cambia el precio unitario
 	public void setPrecioUnitario(double precioUnitario)
-		{
-			this.precioUnitario = precioUnitario;
-		}
+	{
+	    this.precioUnitario = precioUnitario;
+	}
 
-<<<<<<< Updated upstream
+	// =========================
+	// MÉTODOS ADICIONALES
+	// =========================
+
+	// devuelve cuantas copias estan en uso
+	public int getCopiasEnUso() {
+	    return copiasEnUso;
+	}
+
+	// Representación del objeto en texto (útil para imprimir)
 	@Override
 	public String toString() {
 	    return "JuegoDeMesa [nombre=" + nombre 
@@ -146,7 +155,8 @@ public class JuegoDeMesa {
 	        + ", copiasPrestamo=" + totalCopiasPrestamo
 	        + ", copiasVenta=" + copiasVenta + "]";
 	}
-	
+
+	// comparacion entre juegos (se comparan por nombre)
 	@Override
 	public boolean equals(Object obj) {
 	    if (this == obj) return true;
@@ -154,12 +164,4 @@ public class JuegoDeMesa {
 	    JuegoDeMesa otro = (JuegoDeMesa) obj;
 	    return this.nombre.equals(otro.nombre);
 	}
-=======
-	// devuelve cuantas copias estan en uso
-	public int getCopiasEnUso() {
-	    return copiasEnUso;
-	}
-
->>>>>>> Stashed changes
 }
-
