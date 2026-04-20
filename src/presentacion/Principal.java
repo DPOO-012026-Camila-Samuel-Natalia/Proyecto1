@@ -43,8 +43,11 @@ public class Principal
 		// =========================
 		Cliente c1 = new Cliente("1", "Samuel", "samuel123", "1234");
 		Cliente c2 = new Cliente("2", "Laura", "laura456", "abcd");
+		Cliente c3 = new Cliente("2", "Sofia", "sof1", "hola");
+
 		cafe.agregarCliente(c1);
 		cafe.agregarCliente(c2);
+		cafe.agregarCliente(c3);
 
 		// =========================
 		// EMPLEADOS
@@ -232,36 +235,65 @@ public class Principal
 		System.out.println("Estado final del sistema:");
 		System.out.println(cafe);
 
+		
+		
 		// =========================
 		// FASE 2: MENÚ Y VENTAS CAFÉ
 		// =========================
-		Bebida b1 = new Bebida("Cafe Americano", 7000, false, true);
-		Bebida b2 = new Bebida("Cerveza", 9000, true, false);
-		Pasteleria p1 = new Pasteleria("Brownie", 8000, "postre");
-		Pasteleria p2 = new Pasteleria("Galleta", 5000, "galleta");
-
-		cafe.agregarProductoMenu(b1);
-		cafe.agregarProductoMenu(b2);
-		cafe.agregarProductoMenu(p1);
-		cafe.agregarProductoMenu(p2);
-
-		VentaCafe venta1 = new VentaCafe("V1", c1, mesa1, true);
-		venta1.agregarDetalle(new DetalleVentaCafe(b1, 2));
-		venta1.agregarDetalle(new DetalleVentaCafe(p1, 1));
-		venta1.agregarDetalle(new DetalleVentaCafe(p2, 3));
-		cafe.agregarVentaCafe(venta1);
+		
+		System.out.println("\n---- FASE 2: VENTAS CAFETERÍA ----");
+		
+		
+		System.out.println("Venta cafe --");
+		VentaCafe venta1 = null;
+		try {
+		    venta1 = cafe.registrarVentaCafe(c2, true);
+		    cafe.agregarProductoAVenta(venta1, b1, 2);  // 2 cafes
+		    cafe.agregarProductoAVenta(venta1, pa1, 1);  // 1 brownie
+		    cafe.cerrarVentaCafe(venta1);
+		    System.out.println("Venta cerrada: " + venta1);
+		    System.out.println("Puntos de Laura: " + c2.getPuntosFidelidad());
+		} catch (IllegalStateException e) {
+		    System.out.println("Error: " + e.getMessage());
+		}
 
 		System.out.println();
 		System.out.println("Venta del café registrada:");
 		System.out.println(venta1);
 
-		System.out.println();
-		System.out.println("Detalles de la venta:");
-		for (int i = 0; i < venta1.getDetalles().size(); i++)
-		{
-			System.out.println(venta1.getDetalles().get(i));
+		// ERROR ESPERADO: alcohol con menores
+		System.out.println("Prueba error: alcohol con menores --");
+		try {
+		    VentaCafe ventaMenores = cafe.registrarVentaCafe(c2, false);
+		    cafe.agregarProductoAVenta(ventaMenores, b2, 1);  // cerveza
+		    System.out.println("Debio haber fallado");
+		} catch (IllegalStateException e) {
+		    System.out.println("Error esperado: " + e.getMessage());
 		}
 
+		// ERROR ESPERADO: bebida caliente con juego de accion
+		System.out.println("Prueba error: bebida caliente con juego accion --");
+		try {
+		    Prestamo pAccion = cafe.crearPrestamo(c2, j3);  // j3 es ACCION
+		    VentaCafe ventaAccion = cafe.registrarVentaCafe(c2, false);
+		    cafe.agregarProductoAVenta(ventaAccion, b1, 1);  // cafe caliente
+		    System.out.println("Debio haber fallado");
+		} catch (IllegalStateException e) {
+		    System.out.println("Error esperado: " + e.getMessage());
+		}
+
+		// ERROR ESPERADO: cliente sin mesa
+		System.out.println("Prueba error: cliente sin mesa --");
+		try {
+		    cafe.registrarVentaCafe(c3, true);
+		    System.out.println("Debio haber fallado");
+		} catch (IllegalStateException e) {
+		    System.out.println("Error esperado: " + e.getMessage());
+		}
+		
+		
+		
+		
 		System.out.println();
 		System.out.println("Productos del menú registrados:");
 		for (int i = 0; i < cafe.getProductosMenu().size(); i++)
@@ -271,10 +303,14 @@ public class Principal
 
 		System.out.println();
 		System.out.println("Ventas del café registradas:");
-		for (int i = 0; i < cafe.getVentasCafe().size(); i++)
-		{
-			System.out.println(cafe.getVentasCafe().get(i));
+		for (VentaCafe v : cafe.getVentasCafe()) {
+		    System.out.println(v);
 		}
+		
+		System.out.println("\n-- Informe ventas cafeteria --");
+		System.out.println("Total ventas cafe: $" + cafe.getTotalVentasCafe());
+		
+		
 
 		// =========================
 		// FASE 3: TURNOS Y SUGERENCIAS
