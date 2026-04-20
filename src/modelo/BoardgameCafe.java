@@ -366,7 +366,6 @@ public class BoardgameCafe
         int numeroMesa = cliente.getMesaActual().getNumero();
         String codigo = "VC-" + numeroMesa + "-" + (ventasCafe.size() + 1);
         VentaCafe venta = new VentaCafe(codigo, cliente, cobraPropina);
-        ventasCafe.add(venta);
         return venta;
     }
 
@@ -394,6 +393,7 @@ public class BoardgameCafe
             throw new IllegalStateException("La venta no tiene productos");
 
         venta.cerrar();
+        ventasCafe.add(venta); // Agregar venta al cerrar
         venta.getCliente().agregarPuntos((int)(venta.calcularTotal() * 0.01));
     }
 
@@ -500,7 +500,6 @@ public class BoardgameCafe
 
 	    // Verificar que queden los minimos
 	    if (!solicitud.getTurnoQueOfrece().tienePersonalMinimoSin(solicitud.getEmpleadoSolicitante())) {
-	    	solicitud.rechazar();
 	        throw new IllegalStateException("No se puede aprobar, quedaría poco personal");}
 
 	    solicitud.aprobar();

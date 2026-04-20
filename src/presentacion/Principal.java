@@ -56,11 +56,12 @@ public class Principal
 		// =========================
 		Mesero m1 = new Mesero("10", "Carlos", "carlosm", "1111");
 		Cocinero co1 = new Cocinero("11", "Pedro", "pedroc", "2222");
-		Mesero m2 = new Mesero("11", "Ana", "anam", "2222");
-		Mesero m3 = new Mesero("12", "Hector", "Hec555", "azul");
-		Mesero m4 = new Mesero("13", "Andrea", "Andreag", "triangulo");
-		Mesero m5 = new Mesero("14", "Juan", "Juan04", "queso");
-		Mesero m6 = new Mesero("14", "Juan", "Juan04", "queso");
+		Mesero m2 = new Mesero("12", "Ana", "anam", "2222");
+		Mesero m3 = new Mesero("13", "Hector", "Hec555", "azul");
+		Mesero m4 = new Mesero("14", "Andrea", "Andreag", "triangulo");
+		Mesero m5 = new Mesero("15", "Juan", "Juan04", "queso");
+		Mesero m6 = new Mesero("16", "Adrian", "Adrianp", "1234");
+		Cocinero co2 = new Cocinero("17", "Nicolas", "nico123", "5678");
 		cafe.agregarEmpleado(m1);
 		cafe.agregarEmpleado(m2);
 		cafe.agregarEmpleado(co1);
@@ -121,12 +122,13 @@ public class Principal
 		cafe.asignarTurno(m2, lunes);
 		cafe.asignarTurno(co1, lunes);
 		cafe.asignarTurno(m3, lunes);
+		cafe.asignarTurno(co2, martes); 
 		
 		m1.iniciarTurno();
 		m2.iniciarTurno();
 		co1.iniciarTurno();
 		m3.iniciarTurno();
-		
+		co2.iniciarTurno();
 		
 		// =========================
 		// PRODUCTOS MENÚ
@@ -254,7 +256,7 @@ public class Principal
 		// FASE 2: MENÚ Y VENTAS CAFÉ
 		// =========================
 		
-		System.out.println("\n---- FASE 2: VENTAS CAFETERÍA ----");
+		System.out.println("\n==== FASE 2: VENTAS CAFETERÍA ====");
 		
 		
 		System.out.println("Venta cafe --");
@@ -329,7 +331,7 @@ public class Principal
 		// FASE 3: TURNOS Y SUGERENCIAS
 		// =========================
 		
-		System.out.println(" FASE 3: TURNOS Y SUGERENCIAS ");
+		System.out.println("\n ===== FASE 3: TURNOS Y SUGERENCIAS ===== ");
 		
 		System.out.println(" Turnos actuales ");
 		System.out.println("Turnos de Carlos: " + m1.getTurnos());
@@ -405,7 +407,7 @@ public class Principal
 		// SUGERENCIAS DE PLATILLOS
 		// =========================
 		
-		System.out.println(" SUGERENCIAS DE PLATILLOS ");
+		System.out.println("\n ===== SUGERENCIAS DE PLATILLOS ===== ");
 		
 		
 		System.out.println(" Sugerencia aprobada ");
@@ -443,7 +445,7 @@ public class Principal
 		// FASE 4: VENTAS DE JUEGOS
 		// =========================
 		
-		System.out.println("FASE 4: VENTAS DE JUEGOS ");
+		System.out.println("\n ===== FASE 4: VENTAS DE JUEGOS ===== ");
 		
 		System.out.println("Venta juego a cliente");
 		try {VentaJuego vj1 = cafe.registrarVentaJuego(c2, j1, 1);
@@ -519,7 +521,7 @@ public class Principal
 		// =========================
 		// FASE 5: INFORMES
 		// =========================
-		System.out.println(" FASE 5: INFORMES ");
+		System.out.println("\n ===== FASE 5: INFORMES =====");
 		System.out.println(cafe.getInformeVentas());
 
 		System.out.println("-- Historial prestamos -- ");
