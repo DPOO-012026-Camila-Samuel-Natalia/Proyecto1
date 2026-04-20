@@ -37,7 +37,7 @@ public class SolicitudCambioTurno {
 	}
 
     public void aprobar() {
-        estado = "Aprobada";
+        this.estado = "Aprobada";
         if (tipoCambio.equals("INTERCAMBIO")) {
             // Intercambiar turnos
             empleadoSolicitante.quitarTurno(turnoQueOfrece);
@@ -63,7 +63,7 @@ public class SolicitudCambioTurno {
     }
 
 
-    public void rechazar() { estado = "Rechazada"; }
+    public void rechazar() { this.estado = "Rechazada"; }
 
     
     
