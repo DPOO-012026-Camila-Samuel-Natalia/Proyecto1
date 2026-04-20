@@ -87,7 +87,7 @@ public class BoardgameCafe
 	//	return copias;
 	//}
 
-	public ArrayList<Prestamo> gethistorialPrestamos()
+	public ArrayList<Prestamo> getHistorialPrestamos()
 	{
 		return historialPrestamos;
 	}

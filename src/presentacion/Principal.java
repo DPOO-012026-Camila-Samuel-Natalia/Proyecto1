@@ -1,5 +1,7 @@
 package presentacion;
 
+import java.util.ArrayList;
+
 import modelo.Administrador;
 import modelo.Bebida;
 import modelo.BoardgameCafe;
@@ -55,9 +57,11 @@ public class Principal
 		Mesero m1 = new Mesero("10", "Carlos", "carlosm", "1111");
 		Cocinero co1 = new Cocinero("11", "Pedro", "pedroc", "2222");
 		Mesero m2 = new Mesero("11", "Ana", "anam", "2222");
+		Mesero m3 = new Mesero("11", "Hector", "Hec555", "azul");
 		cafe.agregarEmpleado(m1);
 		cafe.agregarEmpleado(m2);
 		cafe.agregarEmpleado(co1);
+		cafe.agregarEmpleado(m3);
 		m1.agregarJuegoQueExplica("Catan");
 		
 		
@@ -110,9 +114,11 @@ public class Principal
 		cafe.asignarTurno(m1, lunes);
 		cafe.asignarTurno(m2, lunes);
 		cafe.asignarTurno(co1, lunes);
+		cafe.asignarTurno(m3, lunes);
 		m1.iniciarTurno();
 		m2.iniciarTurno();
 		co1.iniciarTurno();
+		m3.iniciarTurno();
 		
 		
 		// =========================
@@ -315,36 +321,111 @@ public class Principal
 		// =========================
 		// FASE 3: TURNOS Y SUGERENCIAS
 		// =========================
-		SolicitudCambioTurno solicitud1 = new SolicitudCambioTurno("S1", m1, "tarde", "Necesito cambiar horario");
-		cafe.agregarSolicitudCambioTurno(solicitud1);
-		solicitud1.aprobar();
-
-		System.out.println();
-		System.out.println("Solicitud de cambio de turno:");
-		System.out.println(solicitud1);
-		System.out.println("Nuevo turno del mesero: " + m1.getTurno());
-
-		SugerenciaPlatillo sugerencia1 = new SugerenciaPlatillo("SP1", co1, "Cheesecake", "Postre frío con salsa de frutos rojos");
-		cafe.agregarSugerenciaPlatillo(sugerencia1);
-		sugerencia1.aprobar();
-
-		System.out.println();
-		System.out.println("Sugerencia de platillo:");
-		System.out.println(sugerencia1);
-
-		System.out.println();
-		System.out.println("Solicitudes de cambio de turno registradas:");
-		for (int i = 0; i < cafe.getSolicitudesCambioTurno().size(); i++)
-		{
-			System.out.println(cafe.getSolicitudesCambioTurno().get(i));
+		
+		System.out.println(" FASE 3: TURNOS Y SUGERENCIAS ");
+		
+		System.out.println(" Turnos actuales ");
+		System.out.println("Turnos de Carlos: " + m1.getTurnos());
+		System.out.println("Turnos de Ana: " + m2.getTurnos());
+		System.out.println("Turnos de Pedro: " + co1.getTurnos());
+		
+		
+		System.out.println(" Solicitud cambio general ");
+		try {
+		    SolicitudCambioTurno sol1 = cafe.solicitarCambioGeneral(m1, lunes, martes, "Cita medica");
+		    System.out.println("Solicitud creada: " + sol1);
+		    cafe.aprobarCambioGeneral(sol1);
+		    System.out.println("Solicitud aprobada");
+		    System.out.println(" Turnos de Carlos ahora: " + m1.getTurnos());
+		} catch (IllegalStateException e) {
+		    System.out.println("Error: " + e.getMessage());
 		}
 
-		System.out.println();
-		System.out.println("Sugerencias de platillos registradas:");
-		for (int i = 0; i < cafe.getSugerenciasPlatillos().size(); i++)
-		{
-			System.out.println(cafe.getSugerenciasPlatillos().get(i));
+		
+		System.out.println(" Prueba error: turno sin empleados minimos");
+		try {
+		    // m2 quiere salir del lunes pero quedaria solo 1 mesero el lunes
+		    SolicitudCambioTurno sol2 = cafe.solicitarCambioGeneral(m2, lunes, martes, "Graduacion");
+		    cafe.aprobarCambioGeneral(sol2);
+		    System.out.println("Debio haber fallado");
+		} catch (IllegalStateException e) {
+		    System.out.println("Error esperado: " + e.getMessage());
 		}
+		
+		
+		// Solicitud intercambio exitosa
+		System.out.println(" Solicitud intercambio de turno ");
+		try {
+		    SolicitudCambioTurno sol3 = cafe.solicitarIntercambioTurno(m2, m1, lunes, martes, "Prefiero el lunes");
+		    System.out.println("Solicitud intercambio creada: " + sol3);
+		    cafe.aprobarIntercambioTurno(sol3);
+		    System.out.println("Intercambio aprobado");
+		    System.out.println("  Turnos de Carlos: " + m1.getTurnos());
+		    System.out.println("  Turnos de Ana: " + m2.getTurnos());
+		} catch (IllegalStateException e) {
+		    System.out.println("Error: " + e.getMessage());
+		}
+		
+		
+		// Rechazar solicitud
+		System.out.println(" Rechazar solicitud ");
+		try {
+		    SolicitudCambioTurno sol5 = cafe.solicitarCambioGeneral(m1, lunes, martes, "Vacaciones");
+		    cafe.rechazarCambioTurno(sol5);
+		    System.out.println("Solicitud rechazada: " + sol5.getEstado());
+		} catch (IllegalStateException e) {
+		    System.out.println("Error: " + e.getMessage());
+		}
+
+		// Ver solicitudes pendientes
+		System.out.println(" Solicitudes pendientes ");
+		ArrayList<SolicitudCambioTurno> pendientes = cafe.getSolicitudesPendientes();
+		if (pendientes.isEmpty()) {
+		    System.out.println("No hay solicitudes pendientes");
+		} else {
+		    for (SolicitudCambioTurno s : pendientes) {
+		        System.out.println(s);
+		    }
+		}
+		
+		
+		// =========================
+		// SUGERENCIAS DE PLATILLOS
+		// =========================
+		
+		System.out.println(" SUGERENCIAS DE PLATILLOS ");
+		
+		
+		System.out.println(" Sugerencia aprobada ");
+		try {
+		    SugerenciaPlatillo sug1 = cafe.crearSugerencia(m1, "Cheesecake", "Tarta de queso con frutos rojos");
+		    System.out.println("Sugerencia creada: " + sug1);
+		    cafe.aprobarSugerencia(sug1, "PASTELERIA", 8000);
+		    System.out.println("Sugerencia aprobada");
+		    System.out.println("  Productos en menu: " + cafe.getProductosMenu().size());
+		} catch (IllegalStateException e) {
+		    System.out.println("Error: " + e.getMessage());
+		}
+
+		// Sugerencia rechazada
+		System.out.println("\n-- Sugerencia rechazada --");
+		try {
+		    SugerenciaPlatillo sug2 = cafe.crearSugerencia(co1, "Pizza", "Pizza napolitana");
+		    System.out.println("Sugerencia creada: " + sug2);
+		    cafe.rechazarSugerencia(sug2);
+		    System.out.println("Sugerencia rechazada: " + sug2.getEstado());
+		} catch (IllegalStateException e) {
+		    System.out.println("Error: " + e.getMessage());
+		}
+		
+		
+		// Ver todas las sugerencias
+		System.out.println("\n-- Todas las sugerencias --");
+		for (SugerenciaPlatillo s : cafe.getSugerenciasPlatillos()) {
+		    System.out.println(s);
+		}
+		
+		
 
 		// =========================
 		// FASE 4: VENTAS DE JUEGOS
