@@ -534,19 +534,19 @@ public class Principal
 		// PERSISTENCIA
 		// =========================
 
-		// Crear persistencia (ruta del archivo)
+		// crear persistencia (ruta del archivo)
 		PersistenciaBoardGameCafeJSON persistenciaJSON =
-		        new PersistenciaBoardGameCafeJSON("src/datos/boardgamecafe.txt");
-
-		// Crear central de persistencia
+		        new PersistenciaBoardGameCafeJSON("src/datos/boardgamecafe.txt"); //sabemos que se llama PersistenciaBoard...JSON pero prefirimos dejarlo en formato txt, igual si quieren que sea en formato JSON, solo cambien el "txt" despues del punto por json
+                                                                                  //Ademas para encontrar que la persistencia esta funcionando vean que se crea el archivo txt en la carpeta datos que viene de src
+		// crear central de persistencia
 		CentralPersistencia central = new CentralPersistencia(persistenciaJSON);
 
-		// Guardar sistema
+		// guardar sistema
 		central.guardar(cafe);
 
 		System.out.println("\nSistema guardado correctamente");
 
-		// Cargar sistema
+		// cargar sistema
 		BoardgameCafe cafeCargado = central.cargar();
 
 		System.out.println("\nSistema cargado desde archivo:");
