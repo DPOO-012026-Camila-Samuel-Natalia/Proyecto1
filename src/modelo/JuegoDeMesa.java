@@ -45,6 +45,10 @@ public class JuegoDeMesa {
 		
 	}
 	
+	public int getCopiasDisponiblesPrestamo() {
+		return totalCopiasPrestamo - copiasEnUso;
+		
+	}
 	public void prestar() {
 		if (!estaDisponiblePrestamo()) throw new IllegalStateException ("No hay copias disponibles");
 		copiasEnUso++;
@@ -134,5 +138,20 @@ public class JuegoDeMesa {
 			this.precioUnitario = precioUnitario;
 		}
 
+	@Override
+	public String toString() {
+	    return "JuegoDeMesa [nombre=" + nombre 
+	        + ", categoria=" + categoria
+	        + ", copiasPrestamo=" + totalCopiasPrestamo
+	        + ", copiasVenta=" + copiasVenta + "]";
+	}
+	
+	@Override
+	public boolean equals(Object obj) {
+	    if (this == obj) return true;
+	    if (!(obj instanceof JuegoDeMesa)) return false;
+	    JuegoDeMesa otro = (JuegoDeMesa) obj;
+	    return this.nombre.equals(otro.nombre);
+	}
 }
 

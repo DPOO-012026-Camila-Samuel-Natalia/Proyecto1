@@ -511,12 +511,10 @@ public class BoardgameCafe
 	        throw new IllegalStateException("Solicitud ya fue procesada");
 
 	    // Verificar que queden minimos en ambos turnos
-	    if (!solicitud.getTurnoQueOfrece()
-	                  .tienePersonalMinimoSin(solicitud.getEmpleadoSolicitante()))
+	    if (!solicitud.getTurnoQueOfrece().tienePersonalMinimoSin(solicitud.getEmpleadoSolicitante()))
 	        throw new IllegalStateException("No se puede aprobar, quedaría poco personal en turno ofrecido");
 
-	    if (!solicitud.getTurnoSolicitado()
-	                  .tienePersonalMinimoSin(solicitud.getEmpleadoIntercambio()))
+	    if (!solicitud.getTurnoSolicitado().tienePersonalMinimoSin(solicitud.getEmpleadoIntercambio()))
 	        throw new IllegalStateException("No se puede aprobar, quedaría poco personal en turno deseado");
 
 	    solicitud.aprobar();

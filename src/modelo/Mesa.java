@@ -31,7 +31,7 @@ public class Mesa {
 		return ninos;
 	}
 	public boolean hayMenoresDeEdad() {
-		return menoresDeEdad;
+		return menoresDeEdad || ninos;
 	} 
 	
 	

@@ -28,5 +28,11 @@ public class Prestamo {
 		return activo;
 	}
     
+	@Override
+	public String toString() {
+	    return "Prestamo [solicitante=" + solicitante.getNombre()
+	        + ", juego=" + juego.getNombre()
+	        + ", activo=" + activo + "]";
+	}
     
 }

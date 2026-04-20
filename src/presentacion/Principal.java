@@ -57,11 +57,17 @@ public class Principal
 		Mesero m1 = new Mesero("10", "Carlos", "carlosm", "1111");
 		Cocinero co1 = new Cocinero("11", "Pedro", "pedroc", "2222");
 		Mesero m2 = new Mesero("11", "Ana", "anam", "2222");
-		Mesero m3 = new Mesero("11", "Hector", "Hec555", "azul");
+		Mesero m3 = new Mesero("12", "Hector", "Hec555", "azul");
+		Mesero m4 = new Mesero("13", "Andrea", "Andreag", "triangulo");
+		Mesero m5 = new Mesero("14", "Juan", "Juan04", "queso");
+		Mesero m6 = new Mesero("14", "Juan", "Juan04", "queso");
 		cafe.agregarEmpleado(m1);
 		cafe.agregarEmpleado(m2);
 		cafe.agregarEmpleado(co1);
 		cafe.agregarEmpleado(m3);
+		cafe.agregarEmpleado(m4);
+		cafe.agregarEmpleado(m5);
+		cafe.agregarEmpleado(m6);
 		m1.agregarJuegoQueExplica("Catan");
 		
 		
@@ -115,6 +121,7 @@ public class Principal
 		cafe.asignarTurno(m2, lunes);
 		cafe.asignarTurno(co1, lunes);
 		cafe.asignarTurno(m3, lunes);
+		
 		m1.iniciarTurno();
 		m2.iniciarTurno();
 		co1.iniciarTurno();
@@ -173,7 +180,7 @@ public class Principal
 		try {
 		    pre1 = cafe.crearPrestamo(c1, j1);
 		    System.out.println("Prestamo creado: " + pre1);
-		    System.out.println("Copias disponibles Catan: " + j1.getTotalCopiasPrestamo());
+		    System.out.println("Copias disponibles Catan: " + j1.getCopiasDisponiblesPrestamo());
 		} catch (IllegalStateException e) {
 		    System.out.println("Error: " + e.getMessage());
 		}
@@ -220,8 +227,8 @@ public class Principal
 		System.out.println(cafe);
 
 		System.out.println();
-		System.out.println("Copias disponibles de Catan: " + j1.getTotalCopiasPrestamo());
-		System.out.println("Copias disponibles de Uno: " + j2.getTotalCopiasPrestamo());
+		System.out.println("Copias disponibles de Catan: " + j1.getCopiasDisponiblesPrestamo());
+		System.out.println("Copias disponibles de Uno: " + j2.getCopiasDisponiblesPrestamo());
 
 		System.out.println();
 		
@@ -352,6 +359,11 @@ public class Principal
 		    System.out.println("Error esperado: " + e.getMessage());
 		}
 		
+		System.out.println("Se asigna turno martes a mesero 4 y 5 para hacer prueba de intercambio");
+	
+		cafe.asignarTurno(m4, martes);
+		cafe.asignarTurno(m5, martes);
+		cafe.asignarTurno(m6, lunes);
 		
 		// Solicitud intercambio exitosa
 		System.out.println(" Solicitud intercambio de turno ");
@@ -430,49 +442,94 @@ public class Principal
 		// =========================
 		// FASE 4: VENTAS DE JUEGOS
 		// =========================
-		VentaJuego ventaJuego1 = new VentaJuego("VG1", c1);
-		ventaJuego1.agregarDetalle(new DetalleVentaJuego(j1, 1, 120000));
-		ventaJuego1.agregarDetalle(new DetalleVentaJuego(j2, 2, 30000));
-		cafe.agregarVentaJuego(ventaJuego1);
-
-		System.out.println();
-		System.out.println("Venta de juegos registrada:");
-		System.out.println(ventaJuego1);
-
-		System.out.println();
-		System.out.println("Detalles de la venta de juegos:");
-		for (int i = 0; i < ventaJuego1.getDetalles().size(); i++)
-		{
-			System.out.println(ventaJuego1.getDetalles().get(i));
+		
+		System.out.println("FASE 4: VENTAS DE JUEGOS ");
+		
+		System.out.println("Venta juego a cliente");
+		try {VentaJuego vj1 = cafe.registrarVentaJuego(c2, j1, 1);
+		    System.out.println(" Venta creada: " + vj1);
+		    System.out.println("  Copias venta Catan: " + j1.getCopiasVenta());
+		    System.out.println("  Puntos Laura: " + c2.getPuntosFidelidad());
+		} catch (IllegalStateException e) {
+		    System.out.println(" Error: " + e.getMessage());
+		}
+		
+		System.out.println("Venta juego a cliente sin mesa");
+		try {
+		    VentaJuego vj2 = cafe.registrarVentaJuego(c1, j2, 1);
+		    System.out.println("Venta creada: " + vj2);
+		    System.out.println("  Copias venta Catan: " + j2.getCopiasVenta());
+		    System.out.println("  Puntos Samuel: " + c1.getPuntosFidelidad());
+		} catch (IllegalStateException e) {
+		    System.out.println("Error: " + e.getMessage());
+		}
+		
+		
+		
+		// Venta a empleado con descuento 20%
+		System.out.println("Venta juego a empleado (20% descuento)");
+		try {
+		    VentaJuego vj3 = cafe.registrarVentaJuego(m1, j2, 1);
+		    System.out.println("Venta creada: " + vj3);
+		    System.out.println("  Descuento aplicado: $" + vj3.getDescuento());
+		} catch (IllegalStateException e) {
+		    System.out.println("Error: " + e.getMessage());
+		}
+		
+		
+		// Venta a cliente con codigo de descuento 10%
+		System.out.println("Venta juego a cliente con descuento (10%) ");
+		try {
+		    cafe.aplicarCodigoDescuento(c2, m1.getCodigoDescuento());
+		    VentaJuego vj4 = cafe.registrarVentaJuego(c2, j2, 1);
+		    System.out.println(" Venta creada: " + vj4);
+		    System.out.println("  Descuento aplicado: $" + vj4.getDescuento());
+		} catch (IllegalStateException e) {
+		    System.out.println(" Error: " + e.getMessage());
+		}
+		
+		
+		// ERROR ESPERADO: no hay copias en venta
+		System.out.println(" Prueba error: sin copias en venta ");
+		try {
+		    JuegoDeMesa j4 = new JuegoDeMesa("Monopoly", 1935, "Hasbro", 2, 8, 8, "TABLERO", false, 3, 0, 60000);
+		    cafe.agregarJuego(j4);
+		    cafe.registrarVentaJuego(c1, j4, 1);  // 0 copias en venta
+		    System.out.println(" Debio haber fallado");
+		} catch (IllegalStateException e) {
+		    System.out.println(" Error esperado: " + e.getMessage());
 		}
 
-		System.out.println();
-		System.out.println("Ventas de juegos registradas:");
-		for (int i = 0; i < cafe.getVentasJuego().size(); i++)
-		{
-			System.out.println(cafe.getVentasJuego().get(i));
+		// ERROR ESPERADO: cantidad mayor a copias disponibles
+		System.out.println(" Prueba error: cantidad mayor a copias ");
+		try {
+		    cafe.registrarVentaJuego(c1, j3, 100);
+		    System.out.println(" Debio haber fallado");
+		} catch (IllegalStateException e) {
+		    System.out.println(" Error esperado: " + e.getMessage());
 		}
 
+		// Ver ventas de juegos
+		System.out.println(" Ventas de juegos registradas: ");
+		for (VentaJuego v : cafe.getVentasJuego()) {
+		    System.out.println(v);
+		}
+
+		
 		// =========================
-		// PERSISTENCIA
+		// FASE 5: INFORMES
 		// =========================
+		System.out.println(" FASE 5: INFORMES ");
+		System.out.println(cafe.getInformeVentas());
 
-		// Se crea la persistencia apuntando a la carpeta datos dentro de src
-		PersistenciaBoardGameCafeJSON persistenciaJSON = new PersistenciaBoardGameCafeJSON("src/datos/boardgamecafe.json");
+		System.out.println("-- Historial prestamos -- ");
+		for (Prestamo p : cafe.getHistorialPrestamos()) {
+		    System.out.println(p);
+		}
 
-		// Se crea la central de persistencia
-		CentralPersistencia central = new CentralPersistencia(persistenciaJSON);
-
-		// Se guarda el sistema
-		central.guardar(cafe);
-
-		System.out.println();
-		System.out.println("Se guardó el sistema en el archivo JSON.");
-
-		// Se carga el sistema desde el archivo
-		BoardgameCafe cafeCargado = central.cargar();
-
-		System.out.println("Sistema cargado desde persistencia:");
-		System.out.println(cafeCargado);
-	}
-}
+		System.out.println("\n-- Estado final del sistema --");
+		System.out.println(cafe);
+		
+		
+		
+}}

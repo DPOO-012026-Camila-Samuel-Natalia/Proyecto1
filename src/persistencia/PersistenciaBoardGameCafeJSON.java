@@ -292,3 +292,30 @@ public class PersistenciaBoardGameCafeJSON implements IPersistenciaBoardGameCafe
 		return datos;
 	}
 }
+
+
+
+
+
+//=========================
+		// PERSISTENCIA
+		// =========================
+
+		// Se crea la persistencia apuntando a la carpeta datos dentro de src
+		PersistenciaBoardGameCafeJSON persistenciaJSON = new PersistenciaBoardGameCafeJSON("src/datos/boardgamecafe.json");
+
+		// Se crea la central de persistencia
+		CentralPersistencia central = new CentralPersistencia(persistenciaJSON);
+
+		// Se guarda el sistema
+		central.guardar(cafe);
+
+		System.out.println();
+		System.out.println("Se guardó el sistema en el archivo JSON.");
+
+		// Se carga el sistema desde el archivo
+		BoardgameCafe cafeCargado = central.cargar();
+
+		System.out.println("Sistema cargado desde persistencia:");
+		System.out.println(cafeCargado);
+	}

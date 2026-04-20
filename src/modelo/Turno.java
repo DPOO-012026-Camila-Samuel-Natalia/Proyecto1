@@ -18,12 +18,14 @@ public class Turno {
 	        int cocineros = 0;
 	        int meseros = 0;
 	        for (Empleado e : empleados) {
-	            if (e.equals(empleado)) continue; // asi ignora este
 	            if (e instanceof Cocinero) cocineros++;
 	            if (e instanceof Mesero)   meseros++;
 	        }
+	        if (empleado instanceof Cocinero) cocineros--;
+	        if (empleado instanceof Mesero) meseros--;
 	        return cocineros >= 1 && meseros >= 2;
 	    }
+	    
 	    public ArrayList<Empleado> getEmpleados() { return empleados; }
 	    public String getDiaSemana()  { return diaSemana; }
 	   
